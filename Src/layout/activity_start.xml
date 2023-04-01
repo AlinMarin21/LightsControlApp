@@ -7,14 +7,33 @@
     android:background="@drawable/background_image"
     tools:context=".StartActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:textColor="@color/white"
+    <ImageView
+        android:id="@+id/firstPageHouse"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="314dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="97dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home_image" />
+
+    <ImageView
+        android:id="@+id/firstPageConnectivity"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="213dp"
+        android:layout_marginTop="194dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/firstPageHouse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/animation_connectivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
