@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -32,6 +33,9 @@ public class StartActivity extends AppCompatActivity {
     OutputStream TX_data = null;
     InputStream RX_data = null;
 
+    Intent requestBluetoothPermission_intent = null;
+    Intent homeMenu_intent = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,19 +45,6 @@ public class StartActivity extends AppCompatActivity {
         connectivityAnimation = (AnimationDrawable) firstPageConnectivity.getDrawable();
 
         new bluetoothConnectionTask().execute();
-
-//        connectivityAnimation.start();
-//
-//        /*the animmation will run for 6.6s*/
-//        new android.os.Handler().postDelayed(
-//                new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        /*after 6.6s, the animation stops and a new activity will start*/
-//                        connectivityAnimation.stop();
-//
-//                    }
-//                }, 6600);
     }
 
     private class bluetoothConnectionTask extends AsyncTask<Void, Void, Void> {
@@ -61,10 +52,7 @@ public class StartActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             connectivityAnimation.start();
-
-            System.out.println("animation start");
         }
 
         @Override
@@ -78,24 +66,20 @@ public class StartActivity extends AppCompatActivity {
 
 
             if (ActivityCompat.checkSelfPermission(StartActivity.this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+//                requestBluetoothPermission_intent = new Intent(StartActivity.this, RequestBluetoothPermissionActivity.class);
+//                startActivity(requestBluetoothPermission_intent);
 
+                //request BT permission
             }
 
             btAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (btAdapter == null) {
-                //device doesn't support BT
+                //device doesn't support BT activity
                 System.out.println("BT not supported");
             } else {
-                //BT is off on mobile device
                 if (!btAdapter.isEnabled()) {
+                    //BT is off on mobile device activity
                     System.out.println("BT off");
                 }
 
@@ -104,8 +88,10 @@ public class StartActivity extends AppCompatActivity {
                     for (BluetoothDevice currentDevice : all_devices) {
                         System.out.println("Device Name " + currentDevice.getName() + " " + currentDevice.getAddress());
                     }
+                    //device not paired activity
                 }
             }
+
 
             hc05 = btAdapter.getRemoteDevice("00:22:06:01:78:5E");
             System.out.println(hc05.getName());
@@ -122,6 +108,8 @@ public class StartActivity extends AppCompatActivity {
                 }
                 btChecks_counter++;
             } while(!btSocket.isConnected() && btChecks_counter < 10);
+
+            //socket not created (HC05 not found) activity
 
             try {
                 TX_data = btSocket.getOutputStream();
@@ -156,10 +144,10 @@ public class StartActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
-
             connectivityAnimation.stop();
 
-            System.out.println("animation stop");
+            homeMenu_intent = new Intent(StartActivity.this, HomeMenuActivity.class);
+            startActivity(homeMenu_intent);
         }
     }
 
