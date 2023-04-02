@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeMenuActivity extends AppCompatActivity {
 
-//    private long pressedTime;
+    private long pressedTime;
 
     Button livingRoomButton;
     Button kitchenButton;
@@ -80,15 +80,15 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//
-//        if (pressedTime + 2000 > System.currentTimeMillis()) {
-//            super.onBackPressed();
-//            finish();
-//        } else {
-//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-//        }
-//        pressedTime = System.currentTimeMillis();
-//    }
+    @Override
+    public void onBackPressed() {
+
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finishAffinity();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
+    }
 }

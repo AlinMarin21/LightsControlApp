@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-
 public class StartActivity extends AppCompatActivity {
 
     static final UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -137,6 +136,11 @@ public class StartActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
 
+            try {
+                btSocket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             return null;
         }
@@ -150,6 +154,5 @@ public class StartActivity extends AppCompatActivity {
             startActivity(homeMenu_intent);
         }
     }
-
 
 }
