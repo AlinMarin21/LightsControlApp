@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SmartLiving</string>
+    <string name="livingRoom_name">LIVING ROOM</string>
+    <string name="kitchen_name">KITCHEN</string>
+    <string name="room1_name">ROOM 1</string>
+    <string name="room2_name">ROOM 2</string>
+    <string name="terrace_name">TERRACE</string>
+    <string name="bathroom_name">BATHROOM</string>
+
+</resources>

@@ -1,25 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_image">
+    android:background="@drawable/background_image_5">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="356dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="356dp"
-        android:text="Welcome Home"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/living_room_button"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.4"
+                android:background="@drawable/living_room_imagejpeg"
+                android:text="@string/livingRoom_name"
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/kitchen_button"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.4"
+                android:background="@drawable/kitchen_image"
+                android:text="@string/kitchen_name"
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/room1_button"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.4"
+                android:background="@drawable/room_image_1"
+                android:text="@string/room1_name"
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/room2_button"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.4"
+                android:background="@drawable/room_image_2"
+                android:text="@string/room2_name"
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:id="@+id/terrace_button"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:alpha="0.4"
+                android:background="@drawable/terrace_image"
+                android:text="@string/terrace_name"
+                app:backgroundTint="@null"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp">
+
+        <Button
+            android:id="@+id/bathroom_button"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:alpha="0.4"
+            android:background="@drawable/bathroom_image"
+            android:text="@string/bathroom_name"
+            app:backgroundTint="@null"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>
