@@ -50,6 +50,10 @@
             android:name=".HomeMenuActivity">
 
         </activity>
+        <activity
+            android:name=".LivingRoomActivity">
+
+        </activity>
 
     </application>
 

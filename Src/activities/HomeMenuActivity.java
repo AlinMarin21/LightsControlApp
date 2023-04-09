@@ -1,6 +1,7 @@
 package com.example.smartliving;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeMenuActivity extends AppCompatActivity {
 
     private long pressedTime;
+
+    Intent livingRoom_intent = null;
 
     Button livingRoomButton;
     Button kitchenButton;
@@ -40,6 +43,9 @@ public class HomeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Living Room");
+
+                livingRoom_intent = new Intent(HomeMenuActivity.this, LivingRoomActivity.class);
+                startActivity(livingRoom_intent);
             }
         });
 
