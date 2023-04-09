@@ -19,6 +19,7 @@ public class HomeMenuActivity extends AppCompatActivity {
     private long pressedTime;
 
     Intent livingRoom_intent = null;
+    Intent terrace_intent = null;
 
     Button livingRoomButton;
     Button kitchenButton;
@@ -52,7 +53,10 @@ public class HomeMenuActivity extends AppCompatActivity {
         kitchenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 System.out.println("Kitchen");
+
+
             }
         });
 
@@ -73,7 +77,11 @@ public class HomeMenuActivity extends AppCompatActivity {
         terraceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 System.out.println("Terrace");
+
+                terrace_intent = new Intent(HomeMenuActivity.this, TerraceActivity.class);
+                startActivity(terrace_intent);
             }
         });
 
