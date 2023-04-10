@@ -20,6 +20,8 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     Intent livingRoom_intent = null;
     Intent terrace_intent = null;
+    Intent kitchen_intent = null;
+    Intent bathroom_intent = null;
 
     Button livingRoomButton;
     Button kitchenButton;
@@ -56,7 +58,8 @@ public class HomeMenuActivity extends AppCompatActivity {
 
                 System.out.println("Kitchen");
 
-
+                kitchen_intent = new Intent(HomeMenuActivity.this, KitchenActivity.class);
+                startActivity(kitchen_intent);
             }
         });
 
@@ -89,6 +92,9 @@ public class HomeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Bathroom");
+
+                bathroom_intent = new Intent(HomeMenuActivity.this, BathroomActivity.class);
+                startActivity(bathroom_intent);
             }
         });
 
