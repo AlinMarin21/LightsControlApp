@@ -58,6 +58,14 @@
             android:name=".TerraceActivity">
 
         </activity>
+        <activity
+            android:name=".KitchenActivity">
+
+        </activity>
+        <activity
+            android:name=".BathroomActivity">
+
+        </activity>
 
     </application>
 
