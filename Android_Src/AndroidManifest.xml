@@ -27,26 +27,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RequestBluetoothPermissionActivity">
-
-        </activity>
-        <activity
-            android:name=".BluetoothNotSupportedActivity">
-
-        </activity>
-        <activity
-            android:name=".TurnOnBluetoothActivity">
-
-        </activity>
-        <activity
-            android:name=".PairDeviceActivity">
-
-        </activity>
-        <activity
-            android:name=".ConnectionNotEstablishedActivity">
-
-        </activity>
-        <activity
             android:name=".HomeMenuActivity">
 
         </activity>
