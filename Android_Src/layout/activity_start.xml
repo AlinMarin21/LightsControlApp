@@ -36,4 +36,53 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/animation_connectivity" />
 
+    <RelativeLayout
+        android:id="@+id/text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.107"
+        android:foregroundGravity="center|center_vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Oops..."
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/message_BT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:layout_marginTop="55dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"/>
+
+        <Button
+            android:id="@+id/try_again_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Try Again"
+            android:layout_marginTop="170dp"
+            android:layout_marginLeft="137dp"
+            android:layout_marginRight="138dp"
+            android:paddingRight="25dp"
+            android:paddingLeft="25dp"
+            android:backgroundTint="#A8FFFFFF"
+            android:textColor="#424141"
+            android:textSize="14dp"/>
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

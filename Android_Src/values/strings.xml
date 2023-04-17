@@ -7,4 +7,10 @@
     <string name="terrace_name">TERRACE</string>
     <string name="bathroom_name">BATHROOM</string>
 
+    <string name="device_not_supported">It seems that your device does not support Bluetooth</string>
+    <string name="permission_not_granted">Please grant permissions for Bluetooth connection</string>
+    <string name="bluetooth_not_connected">Your Bluetooth connection is OFF. Please turn ON your Bluetooth</string>
+    <string name="device_not_paired">Your devices are not paired. Please pair your device</string>
+    <string name="connection_not_established">The connection could not be established. Try restarting the Bluetooth module</string>
+
 </resources>
