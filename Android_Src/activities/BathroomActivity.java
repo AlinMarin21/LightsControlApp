@@ -14,8 +14,6 @@ public class BathroomActivity extends AppCompatActivity {
 
     ImageView BathroomBulb;
 
-    int bulb_state = LIGHT_OFF;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,21 +21,24 @@ public class BathroomActivity extends AppCompatActivity {
 
         BathroomBulb = (ImageView) findViewById(R.id.bathroom_bulb);
 
+        if(LIGHT_OFF == GlobalBuffer.TxBuffer[14]) {
+            BathroomBulb.setImageResource(R.drawable.bulb_off2);
+        }
+        else if(LIGHT_ON == GlobalBuffer.TxBuffer[14]) {
+            BathroomBulb.setImageResource(R.drawable.bulb_on2);
+        }
+
         BathroomBulb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(LIGHT_OFF == bulb_state) {
+                if(LIGHT_OFF == GlobalBuffer.TxBuffer[14]) {
                     BathroomBulb.setImageResource(R.drawable.bulb_on2);
-                    bulb_state = LIGHT_ON;
+                    GlobalBuffer.TxBuffer[14] = LIGHT_ON;
                 }
-                else if(LIGHT_ON == bulb_state) {
+                else if(LIGHT_ON == GlobalBuffer.TxBuffer[14]) {
                     BathroomBulb.setImageResource(R.drawable.bulb_off2);
-                    bulb_state = LIGHT_OFF;
+                    GlobalBuffer.TxBuffer[14] = LIGHT_OFF;
                 }
-
-                System.out.println(bulb_state);
-
             }
         });
     }

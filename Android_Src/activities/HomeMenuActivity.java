@@ -47,8 +47,6 @@ public class HomeMenuActivity extends AppCompatActivity {
         livingRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Living Room");
-
                 livingRoom_intent = new Intent(HomeMenuActivity.this, LivingRoomActivity.class);
                 startActivity(livingRoom_intent);
             }
@@ -57,9 +55,6 @@ public class HomeMenuActivity extends AppCompatActivity {
         kitchenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                System.out.println("Kitchen");
-
                 kitchen_intent = new Intent(HomeMenuActivity.this, KitchenActivity.class);
                 startActivity(kitchen_intent);
             }
@@ -68,8 +63,6 @@ public class HomeMenuActivity extends AppCompatActivity {
         room1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Room 1");
-
                 room1_intent = new Intent(HomeMenuActivity.this, Room1Activity.class);
                 startActivity(room1_intent);
             }
@@ -78,8 +71,6 @@ public class HomeMenuActivity extends AppCompatActivity {
         room2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Room 2");
-
                 room2_intent = new Intent(HomeMenuActivity.this, Room2Activity.class);
                 startActivity(room2_intent);
             }
@@ -88,9 +79,6 @@ public class HomeMenuActivity extends AppCompatActivity {
         terraceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                System.out.println("Terrace");
-
                 terrace_intent = new Intent(HomeMenuActivity.this, TerraceActivity.class);
                 startActivity(terrace_intent);
             }
@@ -99,9 +87,7 @@ public class HomeMenuActivity extends AppCompatActivity {
         bathroomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Bathroom");
-
-                bathroom_intent = new Intent(HomeMenuActivity.this, BathroomActivity.class);
+               bathroom_intent = new Intent(HomeMenuActivity.this, BathroomActivity.class);
                 startActivity(bathroom_intent);
             }
         });
@@ -110,7 +96,6 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             finishAffinity();

@@ -15,8 +15,6 @@ public class KitchenActivity extends AppCompatActivity {
 
     ImageView KitchenBulb;
 
-    int bulb_state = LIGHT_OFF;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +22,24 @@ public class KitchenActivity extends AppCompatActivity {
 
         KitchenBulb = (ImageView) findViewById(R.id.kitchen_bulb);
 
+        if(LIGHT_OFF == GlobalBuffer.TxBuffer[3]) {
+            KitchenBulb.setImageResource(R.drawable.bulb_off2);
+        }
+        else if(LIGHT_ON == GlobalBuffer.TxBuffer[3]) {
+            KitchenBulb.setImageResource(R.drawable.bulb_on2);
+        }
+
         KitchenBulb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(LIGHT_OFF == bulb_state) {
+                if(LIGHT_OFF == GlobalBuffer.TxBuffer[3]) {
                     KitchenBulb.setImageResource(R.drawable.bulb_on2);
-                    bulb_state = LIGHT_ON;
+                    GlobalBuffer.TxBuffer[3] = LIGHT_ON;
                 }
-                else if(LIGHT_ON == bulb_state) {
+                else if(LIGHT_ON == GlobalBuffer.TxBuffer[3]) {
                     KitchenBulb.setImageResource(R.drawable.bulb_off2);
-                    bulb_state = LIGHT_OFF;
+                    GlobalBuffer.TxBuffer[3] = LIGHT_OFF;
                 }
-
-                System.out.println(bulb_state);
-
             }
         });
     }

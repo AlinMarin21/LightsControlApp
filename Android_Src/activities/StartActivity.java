@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,8 +52,11 @@ public class StartActivity extends AppCompatActivity {
 
     Intent homeMenu_intent = null;
 
-//    int sec = 0;
-//    private Handler mHandler;
+    boolean transmission_allowed = false;
+    boolean recovery_action = false;
+
+    int sec = 0;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +76,8 @@ public class StartActivity extends AppCompatActivity {
 
         new bluetoothConnectionTask().execute();
 
-//        mHandler = new Handler();
-//        startRepeatingTask();
+        mHandler = new Handler();
+        startRepeatingTask();
     }
 
     private class bluetoothConnectionTask extends AsyncTask<Void, Void, Void> {
@@ -133,30 +137,6 @@ public class StartActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-
-                        try {
-                            TX_data.write(48);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        try {
-                            RX_data.skip(RX_data.available());
-
-                            for (int i = 0; i < 26; i++) {
-                                byte b = (byte) RX_data.read();
-                                System.out.println((char) b);
-                            }
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        try {
-                            btSocket.close();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
                     }
                 }
             }
@@ -199,38 +179,95 @@ public class StartActivity extends AppCompatActivity {
                 });
             }
             else {
+                transmission_allowed = true;
+                recovery_action = true;
+
                 homeMenu_intent = new Intent(StartActivity.this, HomeMenuActivity.class);
                 startActivity(homeMenu_intent);
             }
         }
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        stopRepeatingTask();
-//    }
-//
-//    Runnable mStatusChecker = new Runnable() {
-//        @Override
-//        public void run() {
-//            try {
-//                sec++;
-//                System.out.println("sec: " + sec);
-//            } finally {
-//                // 100% guarantee that this always happens, even if
-//                // your update method throws an exception
-//                mHandler.postDelayed(mStatusChecker, 1000);
-//            }
-//        }
-//    };
-//
-//    void startRepeatingTask() {
-//        mStatusChecker.run();
-//    }
-//
-//    void stopRepeatingTask() {
-//        mHandler.removeCallbacks(mStatusChecker);
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopRepeatingTask();
+    }
 
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                if(true == transmission_allowed) {
+                    try {
+                        if(true == recovery_action) {
+                            TX_data.write(GlobalBuffer.TxBuffer[0]);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        RX_data.read(GlobalBuffer.RxBuffer, 0, 16);
+
+                        if(true == recovery_action)
+                        {
+                            for (int i = 0; i < GlobalBuffer.RX_ELEMENTS; i++) {
+                                GlobalBuffer.TxBuffer[i] = GlobalBuffer.RxBuffer[i];
+                            }
+                        }
+
+                        /*workaround*/
+                        if((GlobalBuffer.RxBuffer[0] & 0xFF) != GlobalBuffer.SOB && (GlobalBuffer.RxBuffer[15] & 0xFF) != GlobalBuffer.EOB)
+                        {
+                            for(int j = 0; j < 7; j++) {
+                                int last_element = GlobalBuffer.RxBuffer[15] & 0xFF;
+                                for(int k = GlobalBuffer.RX_ELEMENTS - 1; k > 0; k--) {
+                                    GlobalBuffer.RxBuffer[k] = GlobalBuffer.RxBuffer[k - 1];
+                                }
+                                GlobalBuffer.RxBuffer[0] = (byte) last_element;
+                            }
+                        }
+
+                        System.out.print("RX: ");
+                        for (int i = 0; i < GlobalBuffer.RX_ELEMENTS; i++) {
+                            System.out.print(GlobalBuffer.RxBuffer[i] + " ");
+                        }
+                        System.out.println("");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        if(false == recovery_action) {
+                            TX_data.write(GlobalBuffer.TxBuffer, 0, 16);
+                        }
+                        else {
+                            recovery_action = false;
+                            TX_data.write(GlobalBuffer.TxBuffer, 1, 15);
+                        }
+                        System.out.print("TX: ");
+                        for (int i = 0; i < GlobalBuffer.TX_ELEMENTS; i++) {
+                            System.out.print(GlobalBuffer.TxBuffer[i] + " ");
+                        }
+                        System.out.println("");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                mHandler.postDelayed(mStatusChecker, 250);
+            }
+        }
+    };
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mStatusChecker);
+    }
 }
