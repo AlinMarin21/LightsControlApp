@@ -78,6 +78,9 @@ public class TerraceActivity extends AppCompatActivity {
                     brightnessSwitch.setChecked(false);
 
                     GlobalBuffer.TxBuffer[13] = MANUAL_CONTROL;
+
+                    GlobalBuffer.TxBuffer[12] = LIGHT_OFF;
+                    terraceBulb.setImageResource(R.drawable.bulb_off2);
                 }
                 else {
                     manualSwitch.setChecked(true);
