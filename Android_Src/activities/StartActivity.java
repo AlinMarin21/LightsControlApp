@@ -55,7 +55,6 @@ public class StartActivity extends AppCompatActivity {
     boolean transmission_allowed = false;
     boolean recovery_action = false;
 
-    int sec = 0;
     private Handler mHandler;
 
     @Override
@@ -220,7 +219,7 @@ public class StartActivity extends AppCompatActivity {
                         /*workaround*/
                         if((GlobalBuffer.RxBuffer[0] & 0xFF) != GlobalBuffer.SOB && (GlobalBuffer.RxBuffer[15] & 0xFF) != GlobalBuffer.EOB)
                         {
-                            for(int j = 0; j < 7; j++) {
+                            for(int j = 0; j < 8; j++) {
                                 int last_element = GlobalBuffer.RxBuffer[15] & 0xFF;
                                 for(int k = GlobalBuffer.RX_ELEMENTS - 1; k > 0; k--) {
                                     GlobalBuffer.RxBuffer[k] = GlobalBuffer.RxBuffer[k - 1];
