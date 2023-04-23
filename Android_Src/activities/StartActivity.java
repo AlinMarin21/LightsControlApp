@@ -2,7 +2,12 @@ package com.example.smartliving;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationChannelCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -35,6 +40,9 @@ public class StartActivity extends AppCompatActivity {
     static final int DEVICE_NOT_PAIRED = 4;
     static final int CONNECTION_NOT_ESTABLISHED = 5;
 
+    static final int NO_MOTION = 0;
+    static final int MOTION = 1;
+
     int bluetooth_action_result = BLUETOOTH_OK;
 
     ImageView firstPageConnectivity = null;
@@ -54,6 +62,7 @@ public class StartActivity extends AppCompatActivity {
 
     boolean transmission_allowed = false;
     boolean recovery_action = false;
+    int last_motion_state = NO_MOTION;
 
     private Handler mHandler;
 
@@ -72,6 +81,10 @@ public class StartActivity extends AppCompatActivity {
         firstPageHouse.setVisibility(View.VISIBLE);
         firstPageConnectivity.setVisibility(View.VISIBLE);
         bluetoothInfoLayout.setVisibility(View.INVISIBLE);
+
+        NotificationChannel notificationChannel = new NotificationChannel("Motion Notification", "MOTION_NOTIFICATION", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(notificationChannel);
 
         new bluetoothConnectionTask().execute();
 
@@ -104,17 +117,16 @@ public class StartActivity extends AppCompatActivity {
 
             if (btAdapter == null) {
                 bluetooth_action_result = BLUETOOTH_NOT_SUPPORTED;
-            }
-            else {
+            } else {
                 if (!btAdapter.isEnabled()) {
                     bluetooth_action_result = BLUETOOTH_NOT_ENABLED;
                 }
-                if(BLUETOOTH_OK == bluetooth_action_result) {
+                if (BLUETOOTH_OK == bluetooth_action_result) {
                     Set<BluetoothDevice> all_devices = btAdapter.getBondedDevices();
 
                     hc05 = btAdapter.getRemoteDevice("00:22:06:01:78:5E");
 
-                    if(!all_devices.contains(hc05)) {
+                    if (!all_devices.contains(hc05)) {
                         bluetooth_action_result = DEVICE_NOT_PAIRED;
                     }
 
@@ -149,24 +161,20 @@ public class StartActivity extends AppCompatActivity {
 
             connectivityAnimation.stop();
 
-            if(BLUETOOTH_OK != bluetooth_action_result) {
+            if (BLUETOOTH_OK != bluetooth_action_result) {
                 firstPageHouse.setVisibility(View.INVISIBLE);
                 firstPageConnectivity.setVisibility(View.INVISIBLE);
                 bluetoothInfoLayout.setVisibility(View.VISIBLE);
 
-                if(BLUETOOTH_PERMISSION_NOT_GRANTED == bluetooth_action_result) {
+                if (BLUETOOTH_PERMISSION_NOT_GRANTED == bluetooth_action_result) {
                     bluetoothMessage.setText(R.string.permission_not_granted);
-                }
-                else if(BLUETOOTH_NOT_SUPPORTED == bluetooth_action_result) {
+                } else if (BLUETOOTH_NOT_SUPPORTED == bluetooth_action_result) {
                     bluetoothMessage.setText(R.string.device_not_supported);
-                }
-                else if(BLUETOOTH_NOT_ENABLED == bluetooth_action_result) {
+                } else if (BLUETOOTH_NOT_ENABLED == bluetooth_action_result) {
                     bluetoothMessage.setText(R.string.bluetooth_not_connected);
-                }
-                else if(DEVICE_NOT_PAIRED == bluetooth_action_result) {
+                } else if (DEVICE_NOT_PAIRED == bluetooth_action_result) {
                     bluetoothMessage.setText(R.string.device_not_paired);
-                }
-                else if(CONNECTION_NOT_ESTABLISHED == bluetooth_action_result) {
+                } else if (CONNECTION_NOT_ESTABLISHED == bluetooth_action_result) {
                     bluetoothMessage.setText((R.string.connection_not_established));
                 }
 
@@ -176,8 +184,7 @@ public class StartActivity extends AppCompatActivity {
                         startActivity(new Intent(StartActivity.this, StartActivity.class));
                     }
                 });
-            }
-            else {
+            } else {
                 transmission_allowed = true;
                 recovery_action = true;
 
@@ -197,9 +204,9 @@ public class StartActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                if(true == transmission_allowed) {
+                if (true == transmission_allowed) {
                     try {
-                        if(true == recovery_action) {
+                        if (true == recovery_action) {
                             TX_data.write(GlobalBuffer.TxBuffer[0]);
                         }
                     } catch (IOException e) {
@@ -209,19 +216,17 @@ public class StartActivity extends AppCompatActivity {
                     try {
                         RX_data.read(GlobalBuffer.RxBuffer, 0, 16);
 
-                        if(true == recovery_action)
-                        {
+                        if (true == recovery_action) {
                             for (int i = 0; i < GlobalBuffer.RX_ELEMENTS; i++) {
                                 GlobalBuffer.TxBuffer[i] = GlobalBuffer.RxBuffer[i];
                             }
                         }
 
                         /*workaround*/
-                        if((GlobalBuffer.RxBuffer[0] & 0xFF) != GlobalBuffer.SOB && (GlobalBuffer.RxBuffer[15] & 0xFF) != GlobalBuffer.EOB)
-                        {
-                            for(int j = 0; j < 8; j++) {
+                        if ((GlobalBuffer.RxBuffer[0] & 0xFF) != GlobalBuffer.SOB && (GlobalBuffer.RxBuffer[15] & 0xFF) != GlobalBuffer.EOB) {
+                            for (int j = 0; j < 8; j++) {
                                 int last_element = GlobalBuffer.RxBuffer[15] & 0xFF;
-                                for(int k = GlobalBuffer.RX_ELEMENTS - 1; k > 0; k--) {
+                                for (int k = GlobalBuffer.RX_ELEMENTS - 1; k > 0; k--) {
                                     GlobalBuffer.RxBuffer[k] = GlobalBuffer.RxBuffer[k - 1];
                                 }
                                 GlobalBuffer.RxBuffer[0] = (byte) last_element;
@@ -238,10 +243,9 @@ public class StartActivity extends AppCompatActivity {
                     }
 
                     try {
-                        if(false == recovery_action) {
+                        if (false == recovery_action) {
                             TX_data.write(GlobalBuffer.TxBuffer, 0, 16);
-                        }
-                        else {
+                        } else {
                             recovery_action = false;
                             TX_data.write(GlobalBuffer.TxBuffer, 1, 15);
                         }
@@ -253,10 +257,24 @@ public class StartActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+
+                    if (NO_MOTION == last_motion_state && MOTION == (GlobalBuffer.RxBuffer[1] & 0xFF)) {
+
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(StartActivity.this, "Motion Notification");
+
+                        notificationBuilder.setContentTitle("Motion has been detected in your home");
+                        notificationBuilder.setSmallIcon(R.drawable.home_image);
+                        notificationBuilder.setAutoCancel(true);
+
+                        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(StartActivity.this);
+                        if (ActivityCompat.checkSelfPermission(StartActivity.this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            //do nothing
+                        }
+                        notificationManagerCompat.notify(1, notificationBuilder.build());
+                    }
+                    last_motion_state = GlobalBuffer.RxBuffer[1];
                 }
             } finally {
-                // 100% guarantee that this always happens, even if
-                // your update method throws an exception
                 mHandler.postDelayed(mStatusChecker, 250);
             }
         }
